@@ -1,0 +1,33 @@
+# ── Production-only requirements (stripped of dev/eval/UI packages) ──
+# This is used by Dockerfile for Render deployment — much faster build!
+
+# ── Core RAG & LLM ──────────────────────────────────────────
+langchain==0.3.25
+langchain-community==0.3.23
+langchain-huggingface==0.1.2
+langchain-groq==0.3.2
+langgraph==0.4.1
+
+# ── Embeddings & Retrieval ───────────────────────────────────
+sentence-transformers==3.4.1
+faiss-cpu==1.9.0
+rank_bm25==0.2.2
+
+# ── Document Loading ─────────────────────────────────────────
+pypdf==5.4.0
+
+# ── API Layer ────────────────────────────────────────────────
+fastapi==0.115.12
+uvicorn[standard]==0.34.0
+python-multipart==0.0.20
+pydantic==2.11.3
+
+# ── Web Search Tool (agentic fallback) ───────────────────────
+tavily-python==0.5.1
+
+# ── Observability ────────────────────────────────────────────
+loguru==0.7.3
+
+# ── Utilities ────────────────────────────────────────────────
+python-dotenv==1.1.0
+httpx==0.28.1
