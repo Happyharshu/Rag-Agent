@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+*.pkl
+
+# Models (too large for GitHub)
+models/
+
+# FAISS indexes
+*.index
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets — never commit
+.env
+
+# Auto-generated vector index
+vectorstore/index/
+
+# Virtual environment
+.venv/
+venv/
+
+# PDFs (upload via UI instead)
+data/*.pdf

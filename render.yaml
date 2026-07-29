@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: rag-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false          # you enter this in Render dashboard
+      - key: GROQ_MODEL
+        value: llama-3.1-8b-instant
+      - key: TAVILY_API_KEY
+        sync: false          # you enter this in Render dashboard
+    healthCheckPath: /health
+    autoDeploy: true
