@@ -284,10 +284,3 @@ This ensures retrieval quality never silently degrades across commits.
 - [ ] Support for DOCX, CSV, and web URL ingestion
 
 ---
-
-## 👩‍💻 Author
-
-**Athira Anil Kumar** — AI Engineer | Generative AI | LLM Systems  
-📍 Sharjah, UAE  
-🔗 [LinkedIn](https://www.linkedin.com/in/athira-a-k) · [GitHub](https://github.com/ara-5)  
-📄 [IEEE Publication — Phishing Detection with DistilBERT & Explainable AI](https://ieeexplore.ieee.org/document/11407086)
