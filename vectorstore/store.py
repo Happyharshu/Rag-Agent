@@ -28,7 +28,7 @@ FAISS_PATH  = STORE_DIR / "faiss.index"
 META_PATH   = STORE_DIR / "metadata.pkl"
 BM25_PATH   = STORE_DIR / "bm25.pkl"
 
-EMBED_DIM   = 1024   # BAAI/bge-m3 output dimension
+EMBED_DIM   = 384    # all-MiniLM-L6-v2 output dimension
 TOP_K_FETCH = 20     # fetch more, rerank down to fewer
 TOP_K_FINAL = 5      # chunks returned to the LLM
 RRF_K       = 60     # standard RRF constant

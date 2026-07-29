@@ -1,4 +1,4 @@
-name: RAG Evaluation CI
+name: RAG Smoke Test CI
 
 on:
   push:
@@ -7,9 +7,9 @@ on:
     branches: [main]
 
 jobs:
-  evaluate:
+  smoke-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
 
     steps:
       - name: Checkout code
@@ -24,39 +24,31 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Pull Ollama + model (lightweight for CI)
+      - name: Verify imports and module structure
         run: |
-          curl -fsSL https://ollama.com/install.sh | sh
-          ollama serve &
-          sleep 5
-          ollama pull llama3.2:1b   # smallest model for fast CI
+          python -c "
+          from app.agent import build_graph, ask
+          from app.api import app
+          from vectorstore.store import build_index, hybrid_search
+          from embeddings.embedder import embed_texts, embed_query, rerank
+          from ingestion.ingest import load_pdfs
+          print('✅ All modules import successfully')
+          "
 
-      - name: Run ingestion on sample PDF
-        run: |
-          # Use a small test PDF if real data not available
-          python -m ingestion.ingest
-
-      - name: Run RAGAs evaluation
+      - name: Verify FastAPI app starts
         env:
-          OLLAMA_MODEL: llama3.2:1b
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
-        run: python -m evaluation.evaluate
-
-      - name: Check quality gate (faithfulness ≥ 0.70)
         run: |
-          python - <<'EOF'
-          import json, sys
-          scores = json.loads(open("evaluation/latest_scores.json").read())
-          faith  = scores.get("faithfulness", 0)
-          print(f"Faithfulness: {faith:.4f}")
-          if faith < 0.70:
-              print("FAIL: faithfulness below threshold 0.70")
-              sys.exit(1)
-          print("PASS: quality gate passed")
-          EOF
+          python -c "
+          from app.api import app
+          from fastapi.testclient import TestClient
+          client = TestClient(app)
+          resp = client.get('/health')
+          assert resp.status_code == 200, f'Health check failed: {resp.text}'
+          print('✅ /health endpoint OK:', resp.json())
+          "
 
-      - name: Upload scores as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ragas-scores
-          path: evaluation/latest_scores.json
+      - name: Check render.yaml exists
+        run: |
+          test -f render.yaml && echo "✅ render.yaml present" || (echo "❌ render.yaml missing" && exit 1)

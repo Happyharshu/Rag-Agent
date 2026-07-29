@@ -1,10 +1,9 @@
 """
 embeddings/embedder.py
 ──────────────────────
-Upgrade from all-MiniLM-L6-v2  →  BAAI/bge-m3
-  - State-of-the-art multilingual embedding model (2024/25)
-  - Supports dense, sparse, and multi-vector retrieval
-  - Ships a cross-encoder reranker for 2-stage retrieval
+Embedding model: all-MiniLM-L6-v2  (lightweight 90MB, cloud-compatible)
+  - Fast sentence embeddings for semantic search
+  - Cross-encoder reranker for 2-stage retrieval precision
 """
 
 from __future__ import annotations

@@ -6,10 +6,12 @@ services:
     plan: free
     envVars:
       - key: GROQ_API_KEY
-        sync: false          # you enter this in Render dashboard
+        sync: false          # enter this in Render dashboard
       - key: GROQ_MODEL
         value: llama-3.1-8b-instant
       - key: TAVILY_API_KEY
-        sync: false          # you enter this in Render dashboard
+        sync: false          # enter this in Render dashboard
+      - key: PYTHONPATH
+        value: /app          # ensures all modules resolve correctly
     healthCheckPath: /health
     autoDeploy: true

@@ -11,8 +11,18 @@ import os
 import httpx
 import streamlit as st
 
-# When running via docker-compose the UI container sets API_BASE=http://api:8000
-API_BASE = os.getenv("API_BASE", "http://localhost:8000")
+# Resolve API backend URL:
+# 1. Streamlit Cloud secrets (set in dashboard after Render deploys)
+# 2. Environment variable API_BASE (docker-compose sets this)
+# 3. Fallback to localhost for local dev
+def _get_api_base() -> str:
+    try:
+        return st.secrets["API_BASE"]
+    except (KeyError, FileNotFoundError):
+        pass
+    return os.getenv("API_BASE", "http://localhost:8000")
+
+API_BASE = _get_api_base()
 
 st.set_page_config(
     page_title="Agentic RAG Assistant",
